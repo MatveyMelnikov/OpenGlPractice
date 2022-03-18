@@ -1,0 +1,21 @@
+﻿  ResourceManager.cpp
+d:\vsprojects\openglnetwork\openglnetwork\resourcemanager.cpp(28): warning C4267: return: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\vsprojects\openglnetwork\openglnetwork\resourcemanager.cpp(49): warning C4267: return: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\vsprojects\openglnetwork\openglnetwork\resourcemanager.cpp(74): warning C4267: return: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\vsprojects\openglnetwork\openglnetwork\resourcemanager.cpp(129): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\memory(1801): warning C4244: аргумент: преобразование "float" в "unsigned int", возможна потеря данных
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\memory(1865): note: выполняется компиляция ссылки на экземпляр шаблон функции "std::_Ref_count_obj<_Ty>::_Ref_count_obj<glm::ivec2&,float&,glm::fvec3&,std::shared_ptr<ShaderProgram>&>(glm::ivec2 &,float &,glm::fvec3 &,std::shared_ptr<ShaderProgram> &)"
+          with
+          [
+              _Ty=Circle
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\memory(1866): note: выполняется компиляция ссылки на экземпляр шаблон функции "std::_Ref_count_obj<_Ty>::_Ref_count_obj<glm::ivec2&,float&,glm::fvec3&,std::shared_ptr<ShaderProgram>&>(glm::ivec2 &,float &,glm::fvec3 &,std::shared_ptr<ShaderProgram> &)"
+          with
+          [
+              _Ty=Circle
+          ]
+  d:\vsprojects\openglnetwork\openglnetwork\resourcemanager.cpp(37): note: выполняется компиляция ссылки на экземпляр шаблон функции "std::shared_ptr<Circle> std::make_shared<Circle,glm::ivec2&,float&,glm::fvec3&,std::shared_ptr<ShaderProgram>&>(glm::ivec2 &,float &,glm::fvec3 &,std::shared_ptr<ShaderProgram> &)"
+  main.cpp
+d:\vsprojects\openglnetwork\openglnetwork\main.cpp(24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+  Создание кода...
+  OpenGLNetwork.vcxproj -> D:\VSProjects\OpenGLNetwork\x64\Debug\OpenGLNetwork.exe
