@@ -43,9 +43,17 @@ void Network::updateNetwork() {
 				layer["numberOfCircles"].IsInt() && layer["circlesColor"].IsArray()) {
 				auto color = layer["circlesColor"].GetArray();
 				if (color.Size() == 3) {
+					int numOfCircles = layer["numberOfCircles"].GetInt();
+					int resultNumOfCircles = 0;
+					if (numOfCircles <= 0)
+						continue;
+					else if (numOfCircles > 5)
+						resultNumOfCircles = 5;
+					else
+						resultNumOfCircles = numOfCircles;
 					layers_.push_back(
 						std::make_pair(
-							layer["numberOfCircles"].GetInt(),
+							resultNumOfCircles,
 							glm::fvec3(color[0].GetFloat(), color[1].GetFloat(), color[2].GetFloat())
 						)
 					);
