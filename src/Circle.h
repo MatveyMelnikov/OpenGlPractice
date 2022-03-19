@@ -11,6 +11,8 @@ public:
 	void setPosition(glm::vec2 position);
 	void setColor(glm::fvec3 color);
 	void setPrecision(unsigned int precision);
+	void setRadius(unsigned int radius);
+	glm::ivec2 getPosition();
 	std::shared_ptr<ShaderProgram> getShader();
 	void render(const glm::ivec2& windowSize);
 private:

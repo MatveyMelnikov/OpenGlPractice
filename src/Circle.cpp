@@ -42,6 +42,14 @@ void Circle::setPrecision(unsigned int precision) {
 	updatePrecision();
 }
 
+void Circle::setRadius(unsigned int radius) {
+	radius_ = radius;
+}
+
+glm::ivec2 Circle::getPosition() {
+	return position_;
+}
+
 std::shared_ptr<ShaderProgram> Circle::getShader() {
 	return shader_;
 }
@@ -66,10 +74,8 @@ void Circle::render(const glm::ivec2& windowSize) {
 			1.f
 		)
 	);
-	//projectionMatrix = glm::ortho(0.f, (float)windowSize.x, 0.f, (float)windowSize.y, 0.f, 10.f);
 	shader_->use();
 	shader_->setUniform("color", color_);
-	//shader_->setUniform("transormMatrix", projectionMatrix * modelMatrix);
 	shader_->setUniform("modelMatrix", modelMatrix);
 	glBindVertexArray(vao_);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, points_.size());

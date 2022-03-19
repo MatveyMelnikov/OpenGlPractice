@@ -47,6 +47,11 @@ float Engine::getCameraSpeed() {
 	return cameraSpeed_;
 }
 
+void Engine::setScaleSpeed(float speed) {
+	if (speed > 0)
+		scaleSpeed_ = speed;
+}
+
 float Engine::getLastFrameTime() {
 	return lastFrameTime_;
 }
@@ -59,7 +64,7 @@ bool Engine::getKeyStatus(int key) {
 	if (key >= 0 && key < 1024)
 		return keys_[key];
 	else 
-		false;
+		return false;
 }
 
 void Engine::catchMovementKeys() {
@@ -75,10 +80,67 @@ void Engine::catchMovementKeys() {
 		moveCamera(glm::fvec2(speed, 0.f));
 	if (keys_[GLFW_KEY_E]) {
 		if (scale_ > 0.1f)
-			scale_ -= 1.f * deltaTime;
+			scale_ -= scaleSpeed_ * deltaTime;
 	} if (keys_[GLFW_KEY_Q]) {
 		if (scale_ < 3.0f)
-			scale_ += 1.f * deltaTime;
+			scale_ += scaleSpeed_ * deltaTime;
+	}
+}
+
+void Engine::loadConfigFile(const std::string& path) {
+	ResourceManager* resourceManager = ResourceManager::getInstance();
+	std::string source = resourceManager->loadStringFromFile(path);
+	if (source.empty())
+		return;
+
+	rapidjson::Document document;
+	rapidjson::ParseResult result = document.Parse(source.c_str());
+	if (result.IsError()) {
+		printf(
+			"-Parse error in %s: %s (%zu)\n",
+			path.c_str(),
+			rapidjson::GetParseError_En(result.Code()),
+			result.Offset()
+		);
+		return;
+	}
+
+	int width = 0.f, radius = 0.f, precision = 0;
+	glm::fvec3 linesColor;
+	bool isWidth = false, isRadius = false, isColor = false;
+	if (document.HasMember("cameraSpeed") && document["cameraSpeed"].IsFloat())
+		setCameraSpeed(document["cameraSpeed"].GetFloat());
+	if (document.HasMember("scaleSpeed") && document["scaleSpeed"].IsFloat())
+		setScaleSpeed(document["scaleSpeed"].GetFloat());
+	if (document.HasMember("linesWidth") && document["linesWidth"].IsInt()) {
+		width = document["linesWidth"].GetInt();
+		isWidth = true;
+	}
+	if (document.HasMember("circlesRadius") && document["circlesRadius"].IsInt()) {
+		radius = document["circlesRadius"].GetInt();
+		isRadius = true;
+	}
+	if (document.HasMember("circlesPrecision") && document["circlesPrecision"].IsInt())
+		precision = document["circlesPrecision"].GetInt();
+	if (document.HasMember("linesColor") && document["linesColor"].IsArray()) {
+		auto color = document["linesColor"].GetArray();
+		if (color.Size() == 3) {
+			linesColor = glm::fvec3(color[0].GetFloat(), color[1].GetFloat(), color[2].GetFloat());
+			isColor = true;
+		}
+	}
+
+	for (unsigned int i = 0; i < resourceManager->getLinesAmount(); i++) {
+		if (isWidth)
+			resourceManager->getLine(i)->setWidth(width);
+		if (isColor)
+			resourceManager->getLine(i)->setColor(linesColor);
+	}
+	for (unsigned int i = 0; i < resourceManager->getCirclesAmount(); i++) {
+		if (precision >= 3)
+			resourceManager->getCircle(i)->setPrecision((unsigned int)precision);
+		if (isRadius)
+			resourceManager->getCircle(i)->setRadius(radius);
 	}
 }
 

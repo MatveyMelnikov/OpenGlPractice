@@ -13,8 +13,46 @@ void ResourceManager::createShaderProgram(const std::string& vertexShader, const
 		std::make_shared<ShaderProgram>(vertexShader, fragmentShader)
 	);
 }
-void ResourceManager::createShaderProgram(const std::string& file) {
-	// TODO
+void ResourceManager::createShaderProgram(const std::string& path) {
+	std::string vertexShader = loadStringFromFile(path + "/vertexShader.txt");
+	std::string fragmentShader = loadStringFromFile(path + "/fragmentShader.txt");
+	if (!vertexShader.empty() && !fragmentShader.empty())
+		createShaderProgram(vertexShader, fragmentShader);
+
+	/*if (source == "")
+		return;
+
+
+	rapidjson::Document document;
+	rapidjson::ParseResult result = document.Parse(source.c_str());
+	if (result.IsError()) {
+		printf(
+			"-Parse error in %s: %s (%u)\n", 
+			filePath.c_str(), 
+			rapidjson::GetParseError_En(result.Code()), 
+			result.Offset()
+		);
+		return;
+	}
+
+	if (document.HasMember("shaders") && document["shaders"].IsObject()) {
+		auto shaders = document["shaders"].GetObject();
+		if (shaders.HasMember("vertex") && shaders.HasMember("fragment") &&
+			shaders["vertex"].IsString() && shaders["fragment"].IsString()) {
+			std::string vertexShader = shaders["vertex"].GetString();
+			std::string fragmentShader = shaders["fragment"].GetString();
+		} else {
+			printf(
+				"-Parse error: Ñan't find \"vertex\" and \"fragment\" members in %s",
+				filePath.c_str()
+			);
+		}
+	} else {
+		printf(
+			"-Parse error: Ñan't find \"shaders\" member in %s",
+			filePath.c_str()
+		);
+	}*/
 }
 
 std::shared_ptr<ShaderProgram> ResourceManager::getShaderProgram(unsigned int position) {
@@ -72,4 +110,19 @@ std::shared_ptr<Line> ResourceManager::getLine(unsigned int position) {
 
 unsigned int ResourceManager::getLinesAmount() {
 	return lines_.size();
+}
+
+std::string ResourceManager::loadStringFromFile(const std::string& path) {
+	if (path.empty())
+		return std::string();
+
+	std::ifstream fin(path);
+	if (!fin.is_open())
+		return std::string();
+
+	std::stringstream source;
+	source << fin.rdbuf();
+	fin.close();
+
+	return source.str();
 }

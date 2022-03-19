@@ -1,21 +1,27 @@
 #include "ShaderProgram.h"
 
 ShaderProgram::ShaderProgram(const std::string& vertexShader, const std::string fragmentShader) {
-	GLuint vertexShaderId = 0, segmentShaderId = 0;
-	vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+	GLuint vertexShaderId = 0, fragmentShaderId = 0;
+
 	const GLchar* vertexSource = vertexShader.c_str();
+	vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShaderId, 1, &vertexSource, nullptr);
 	glCompileShader(vertexShaderId);
-	segmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	debugShaderCompile(vertexShaderId);
+
 	const GLchar* fragmentSource = fragmentShader.c_str();
-	glShaderSource(segmentShaderId, 1, &fragmentSource, nullptr);
-	glCompileShader(segmentShaderId);
+	fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShaderId, 1, &fragmentSource, nullptr);
+	glCompileShader(fragmentShaderId);
+	debugShaderCompile(fragmentShaderId);
+
 	shaderProgram_ = glCreateProgram();
 	glAttachShader(shaderProgram_, vertexShaderId);
-	glAttachShader(shaderProgram_, segmentShaderId);
+	glAttachShader(shaderProgram_, fragmentShaderId);
 	glLinkProgram(shaderProgram_);
+
 	glDeleteShader(vertexShaderId);
-	glDeleteShader(segmentShaderId);
+	glDeleteShader(fragmentShaderId);
 }
 
 void ShaderProgram::use() {
@@ -45,4 +51,15 @@ void ShaderProgram::setUniform(const std::string& uniformName, const glm::mat4& 
 		false,
 		&value[0][0]
 	);
+}
+
+void ShaderProgram::debugShaderCompile(GLuint shaderId) {
+	GLint is_compile = 0;
+	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &is_compile);
+	if (!is_compile)
+	{
+		GLchar info_log[1024];
+		glGetShaderInfoLog(shaderId, 1024, nullptr, info_log);
+		printf("-Shader compile error: %s\n", info_log);
+	}
 }

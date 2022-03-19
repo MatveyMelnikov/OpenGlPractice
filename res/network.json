@@ -1,0 +1,48 @@
+{
+	"layers" : [
+		{
+			"numberOfCircles" : 2,
+			"circlesColor" : [ 1.0, 0.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 5,
+			"circlesColor" : [ 0.0, 1.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 3,
+			"circlesColor" : [ 0.0, 0.0, 1.0 ]
+		},
+		{
+			"numberOfCircles" : 5,
+			"circlesColor" : [ 1.0, 0.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 4,
+			"circlesColor" : [ 0.0, 1.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 5,
+			"circlesColor" : [ 0.0, 0.0, 1.0 ]
+		},
+		{
+			"numberOfCircles" : 4,
+			"circlesColor" : [ 1.0, 0.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 5,
+			"circlesColor" : [ 0.0, 1.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 4,
+			"circlesColor" : [ 0.0, 0.0, 1.0 ]
+		},
+		{
+			"numberOfCircles" : 2,
+			"circlesColor" : [ 1.0, 0.0, 0.0 ]
+		},
+		{
+			"numberOfCircles" : 3,
+			"circlesColor" : [ 0.0, 1.0, 0.0 ]
+		}
+	]
+}

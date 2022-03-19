@@ -1,0 +1,7 @@
+{
+	"cameraSpeed" : 150.0,
+	"scaleSpeed" : 1.0,
+	"linesWidth" : 3,
+	"circlesRadius" : 10,
+	"circlesPrecision" : 20
+}

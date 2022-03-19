@@ -14,5 +14,7 @@ public:
 	void setUniform(const std::string& uniformName, glm::ivec4 value);
 	void setUniform(const std::string& uniformName, const glm::mat4& value);
 private:
+	void debugShaderCompile(GLuint shaderId);
+private:
 	GLuint shaderProgram_ = 0;
 };

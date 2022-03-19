@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Engine.h"
 #include "ResourceManager.h"
+#include "Network.h"
 
 const char *vertex_shader_src =
 "#version 460\n"
@@ -45,6 +46,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(WINDOW_SIZE.x, WINDOW_SIZE.y, "Network", NULL, NULL);
 	if (!window)
@@ -62,32 +64,18 @@ int main(void)
 		return -1;
 	}
 
+	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 
 	glfwSetWindowSizeCallback(window, glfwWindowSizeCallback);
 
 	Engine* engine = Engine::getInstance(window);
 	ResourceManager* resourceManager = ResourceManager::getInstance();
-	resourceManager->createShaderProgram(vertex_shader_src, fragment_shader_src);
-	resourceManager->createCircle(
-		glm::ivec2(0, 0),
-		10,
-		glm::fvec3(1.f, 0.f, 0.f),
-		0
-	);
-	resourceManager->createCircle(
-		glm::ivec2(300, 200),
-		10,
-		glm::fvec3(1.f, 0.f, 0.f),
-		0
-	);
-	resourceManager->createLine(
-		glm::ivec2(0, 0),
-		glm::ivec2(300, 200),
-		10,
-		glm::fvec3(0.f, 0.f, 1.f),
-		0
-	);
+	resourceManager->createShaderProgram("../res");
+	Network network = Network(window, "../res/network.json");
+
+	// After creating elements
+	engine->loadConfigFile("../res/config.json");
 
 	while (!glfwWindowShouldClose(window))
 	{

@@ -2,6 +2,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <vector>
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
 #include "glm/glm.hpp"
 #include "ResourceManager.h"
 
@@ -14,10 +16,12 @@ public:
 	float getCameraScale();
 	void setCameraSpeed(float speed);
 	float getCameraSpeed();
+	void setScaleSpeed(float speed);
 	float getLastFrameTime();
 	void setKeyStatus(int key, bool status);
 	bool getKeyStatus(int key);
 	void catchMovementKeys();
+	void loadConfigFile(const std::string& path);
 	void render();
 private:
 	Engine(GLFWAPI::GLFWwindow* window);
@@ -31,4 +35,5 @@ private:
 	float lastFrameTime_ = 0.f;
 	bool keys_[512];
 	float cameraSpeed_ = 150.f;
+	float scaleSpeed_ = 1.f;
 };
