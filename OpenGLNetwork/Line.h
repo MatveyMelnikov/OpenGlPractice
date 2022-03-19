@@ -8,10 +8,10 @@
 class Line {
 public:
 	Line(
-		glm::ivec2 startPoint, 
-		glm::ivec2 endPoint, 
+		glm::ivec2 startPoint,
+		glm::ivec2 endPoint,
 		unsigned int width,
-		glm::fvec3 color, 
+		glm::fvec3 color,
 		std::shared_ptr<ShaderProgram> shader
 	);
 	void setPoints(glm::ivec2 startPoint, glm::ivec2 endPoint);

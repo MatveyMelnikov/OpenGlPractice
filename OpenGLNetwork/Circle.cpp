@@ -1,13 +1,12 @@
 #include "Circle.h"
 
 Circle::Circle(
-	glm::ivec2 position, 
+	glm::ivec2 position,
 	unsigned int radius,
-	glm::fvec3 color, 
+	glm::fvec3 color,
 	std::shared_ptr<ShaderProgram> shader
 ) : position_(position), radius_(radius), color_(color), shader_(shader) {
 	updatePrecision();
-
 	// vbo
 	glGenBuffers(1, &vbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
@@ -17,15 +16,12 @@ Circle::Circle(
 		&points_[0].x,
 		GL_STATIC_DRAW
 	);
-
 	//vao
 	glGenVertexArrays(1, &vao_);
 	glBindVertexArray(vao_);
-
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, nullptr);
-
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -53,10 +49,9 @@ std::shared_ptr<ShaderProgram> Circle::getShader() {
 void Circle::render(const glm::ivec2& windowSize) {
 	if (shader_ == nullptr)
 		return;
-
 	glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 	modelMatrix = glm::translate(
-		glm::mat4(1.f), 
+		glm::mat4(1.f),
 		glm::vec3(
 			position_.x,
 			position_.y,
@@ -91,7 +86,6 @@ void Circle::updatePrecision() {
 			sin(cornerPart * i)
 		);
 	}
-
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 	glBufferData(
 		GL_ARRAY_BUFFER,

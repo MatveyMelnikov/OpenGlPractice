@@ -1,5 +1,4 @@
 #pragma once
-#include <GLFW/glfw3.h>
 #include <vector>
 #include "ShaderProgram.h"
 #include "Circle.h"
@@ -24,13 +23,6 @@ public:
 	);
 	std::shared_ptr<Line> getLine(unsigned int position);
 	unsigned int getLinesAmount();
-	void moveCamera(glm::fvec2 cameraPosition);
-	void setCameraPosition(glm::fvec2 cameraPosition);
-	void setCameraScale(float scale);
-	float getCameraScale();
-	void setCameraOffset(glm::fvec2 cameraOffset);
-	float getLastFrameTime();
-	void render(const glm::ivec2& windowSize);
 private:
 	ResourceManager() {};
 	ResourceManager(const ResourceManager&) {};
@@ -41,8 +33,4 @@ private:
 	std::vector<std::shared_ptr<ShaderProgram>> shaderPrograms_;
 	std::vector<std::shared_ptr<Circle>> circles_;
 	std::vector<std::shared_ptr<Line>> lines_;
-	glm::fvec2 cameraPosition_ = glm::fvec2(0, 0);
-	glm::fvec2 cameraOffset_ = glm::fvec2(0, 0);
-	float scale_ = 1.0f;
-	float lastFrameTime_ = 0.f;
 };

@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "Engine.h"
 #include "ResourceManager.h"
 
 const char *vertex_shader_src =
@@ -21,64 +22,13 @@ const char *fragment_shader_src =
 "	fragColor = vec4(color, 1.0);"
 "}";
 
-const int CAMERA_SPEED = 1.0;
 const glm::ivec2 WINDOW_SIZE = glm::ivec2(640, 480);
-
-void render(GLFWwindow* window, int width, int height) {
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glViewport(0, 0, width, height);
-	ResourceManager* resourceManager = ResourceManager::getInstance();
-
-	// Holding the camera in the center of the window
-	/*resourceManager->setCameraPosition(
-		glm::ivec2((WINDOW_SIZE.x - width) / 2.f, (WINDOW_SIZE.y - height) / 2.f)
-	);*/
-
-	resourceManager->render(glm::ivec2(width, height));
-
-	glfwSwapBuffers(window);
-}
 
 void glfwWindowSizeCallback(GLFWwindow* window, int width, int height)
 {
-	std::cout << "Window size: " << width << " " << height << std::endl;
-	render(window, width, height);
-}
-
-void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-	/*if (action == GLFW_PRESS)
-		keys[key] = true;
-	else if (action == GLFW_RELEASE)
-		keys[key] = false;*/ //Вот это нужно инкапсулировать
-
-	if (action == GLFW_PRESS) {
-		switch (key)
-		{
-		case GLFW_KEY_W:
-			ResourceManager::getInstance()->moveCamera(glm::fvec2(0.f, CAMERA_SPEED));
-			break;
-		case GLFW_KEY_A:
-			ResourceManager::getInstance()->moveCamera(glm::fvec2(-CAMERA_SPEED, 0.f));
-			break;
-		case GLFW_KEY_D:
-			ResourceManager::getInstance()->moveCamera(glm::fvec2(CAMERA_SPEED, 0.f));
-			break;
-		case GLFW_KEY_S:
-			ResourceManager::getInstance()->moveCamera(glm::fvec2(0.f, -CAMERA_SPEED));
-			break;
-		case GLFW_KEY_E:
-			break;
-		case GLFW_KEY_Q:
-			break;
-		default:
-			break;
-		}
-	}
-
-	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) // and не работает 
-		glfwSetWindowShouldClose(window, 1); // устанавливаем флаг выхода в единице
+	// Rendering during screen resizing
+	Engine* engine = Engine::getInstance(window);
+	engine->render();
 }
 
 int main(void)
@@ -114,10 +64,9 @@ int main(void)
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 
 	glfwSetWindowSizeCallback(window, glfwWindowSizeCallback);
-	glfwSetKeyCallback(window, glfwKeyCallback);
 
+	Engine* engine = Engine::getInstance(window);
 	ResourceManager* resourceManager = ResourceManager::getInstance();
-	resourceManager->setCameraOffset(glm::fvec2(320, 240));
 	resourceManager->createShaderProgram(vertex_shader_src, fragment_shader_src);
 	resourceManager->createCircle(
 		glm::ivec2(0, 0),
@@ -125,29 +74,23 @@ int main(void)
 		glm::fvec3(1.f, 0.f, 0.f),
 		0
 	);
-	/*resourceManager->createCircle(
-		glm::ivec2(100, 100),
+	resourceManager->createCircle(
+		glm::ivec2(300, 200),
 		10,
 		glm::fvec3(1.f, 0.f, 0.f),
 		0
-	);*/
+	);
 	resourceManager->createLine(
 		glm::ivec2(0, 0),
-		glm::ivec2(100, 100),
-		30,
+		glm::ivec2(300, 200),
+		10,
 		glm::fvec3(0.f, 0.f, 1.f),
 		0
 	);
 
-	resourceManager->moveCamera(glm::ivec2(100, 100));
-
 	while (!glfwWindowShouldClose(window))
 	{
-		int width = 0, height = 0;
-		glfwGetFramebufferSize(window, &width, &height);
-		render(window, width, height);
-
-		glfwPollEvents();
+		engine->render();
 	}
 
 	glfwTerminate();

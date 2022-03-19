@@ -13,12 +13,10 @@ Line::Line(
 		 0.0f,  0.0f,
 		 0.0f,  1.0f,
 		 1.0f,  1.0f,
-
 		 1.0f,  1.0f,
 		 1.0f,  0.0f,
 		 0.0f,  0.0f,
 	};
-
 	// vbo
 	glGenBuffers(1, &vbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
@@ -28,15 +26,12 @@ Line::Line(
 		&points,
 		GL_STATIC_DRAW
 	);
-
 	//vao
 	glGenVertexArrays(1, &vao_);
 	glBindVertexArray(vao_);
-
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, nullptr);
-
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -60,9 +55,8 @@ std::shared_ptr<ShaderProgram> Line::getShader() {
 
 float Line::getAngleRelativeAxis(int deltaX, int deltaY) {
 	const float PI = 3.1415;
-
 	// alpha = |y1 - y2| / |x1 - x2|
-	float angle = atan(abs(deltaY) / abs(deltaX));
+	float angle = atan(abs((float)deltaY) / abs((float)deltaX));
 	if (deltaX < 0 && deltaY >= 0) // 4 quarter
 		return 2.0f * PI - angle; // (0.5f * PI - angle) + PI * 1.5f
 	else if (deltaX > 0 && deltaY >= 0) // 3 quarter
@@ -76,28 +70,25 @@ float Line::getAngleRelativeAxis(int deltaX, int deltaY) {
 void Line::render(const glm::ivec2& windowSize) {
 	if (shader_ == nullptr)
 		return;
-
 	int deltaX = startPoint_.x - endPoint_.x;
 	int deltaY = startPoint_.y - endPoint_.y;
-
 	// alpha = |y1 - y2| / |x1 - x2|
 	float length = sqrt(
 		pow(deltaY, 2) +
 		pow(deltaX, 2)
 	);
-
 	glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 	modelMatrix = glm::translate(
 		glm::mat4(1.f),
 		glm::vec3(
-			((float)startPoint_.x),
-			((float)startPoint_.y), 
+		((float)startPoint_.x),
+			((float)startPoint_.y),
 			0.f
 		)
 	);
 	modelMatrix = glm::rotate(
-		modelMatrix, 
-		getAngleRelativeAxis(deltaX, deltaY), 
+		modelMatrix,
+		getAngleRelativeAxis(deltaX, deltaY),
 		glm::vec3(0.f, 0.f, 1.f)
 	);
 	modelMatrix = glm::translate( // center offset
@@ -108,7 +99,6 @@ void Line::render(const glm::ivec2& windowSize) {
 			0.f
 		)
 	);
-
 	// x - length, y - width
 	modelMatrix = glm::scale(
 		modelMatrix,
