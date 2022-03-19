@@ -21,6 +21,7 @@ public:
 	void render(const glm::ivec2& windowSize);
 private:
 	float getAngleRelativeAxis(int deltaX, int deltaY);
+	void calculateMatrixes();
 private:
 	glm::ivec2 startPoint_;
 	glm::ivec2 endPoint_;
@@ -29,4 +30,5 @@ private:
 	GLuint vao_ = 0;
 	std::shared_ptr<ShaderProgram> shader_ = nullptr;
 	unsigned int width_ = 5;
+	glm::mat4 modelMatrix_;
 };

@@ -27,6 +27,7 @@ public:
 	std::shared_ptr<Line> getLine(unsigned int position);
 	unsigned int getLinesAmount();
 	std::string loadStringFromFile(const std::string& path);
+	void clearObjects();
 private:
 	ResourceManager() {};
 	ResourceManager(const ResourceManager&) {};

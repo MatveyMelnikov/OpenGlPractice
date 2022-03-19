@@ -34,11 +34,14 @@ Line::Line(
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, nullptr);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	calculateMatrixes();
 }
 
 void Line::setPoints(glm::ivec2 startPoint, glm::ivec2 endPoint) {
 	startPoint_ = startPoint;
 	endPoint_ = endPoint;
+	calculateMatrixes();
 }
 
 void Line::setColor(glm::fvec3 color) {
@@ -47,6 +50,7 @@ void Line::setColor(glm::fvec3 color) {
 
 void Line::setWidth(unsigned int width) {
 	width_ = width;
+	calculateMatrixes();
 }
 
 std::shared_ptr<ShaderProgram> Line::getShader() {
@@ -67,9 +71,7 @@ float Line::getAngleRelativeAxis(int deltaX, int deltaY) {
 		return angle;
 }
 
-void Line::render(const glm::ivec2& windowSize) {
-	if (shader_ == nullptr)
-		return;
+void Line::calculateMatrixes() {
 	int deltaX = startPoint_.x - endPoint_.x;
 	int deltaY = startPoint_.y - endPoint_.y;
 	// alpha = |y1 - y2| / |x1 - x2|
@@ -77,8 +79,8 @@ void Line::render(const glm::ivec2& windowSize) {
 		pow(deltaY, 2) +
 		pow(deltaX, 2)
 	);
-	glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
-	modelMatrix = glm::translate(
+
+	modelMatrix_ = glm::translate(
 		glm::mat4(1.f),
 		glm::vec3(
 		((float)startPoint_.x),
@@ -86,13 +88,13 @@ void Line::render(const glm::ivec2& windowSize) {
 			0.f
 		)
 	);
-	modelMatrix = glm::rotate(
-		modelMatrix,
+	modelMatrix_ = glm::rotate(
+		modelMatrix_,
 		getAngleRelativeAxis(deltaX, deltaY),
 		glm::vec3(0.f, 0.f, 1.f)
 	);
-	modelMatrix = glm::translate( // center offset
-		modelMatrix,
+	modelMatrix_ = glm::translate( // center offset
+		modelMatrix_,
 		glm::vec3(
 			0.f,
 			-(float)width_,
@@ -100,17 +102,23 @@ void Line::render(const glm::ivec2& windowSize) {
 		)
 	);
 	// x - length, y - width
-	modelMatrix = glm::scale(
-		modelMatrix,
+	modelMatrix_ = glm::scale(
+		modelMatrix_,
 		glm::vec3(
 			length,
 			width_ * 2,
 			1.f
 		)
 	);
+}
+
+void Line::render(const glm::ivec2& windowSize) {
+	if (shader_ == nullptr)
+		return;
+	
 	shader_->use();
 	shader_->setUniform("color", color_);
-	shader_->setUniform("modelMatrix", modelMatrix);
+	shader_->setUniform("modelMatrix", modelMatrix_);
 	glBindVertexArray(vao_);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
 	glUseProgram(0);

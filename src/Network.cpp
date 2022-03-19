@@ -1,4 +1,11 @@
 #include "Network.h"
+Network* Network::instance_ = nullptr;
+
+Network* Network::getInstance(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath) {
+	if (instance_ == nullptr)
+		instance_ = new Network(window, networkFilePath);
+	return instance_;
+}
 
 Network::Network(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath) {
 	engine_ = Engine::getInstance(window);
@@ -11,6 +18,7 @@ void Network::updateNetwork() {
 	if (engine_ == nullptr)
 		return;
 	layers_.clear();
+	resourceManager_->clearObjects();
 
 	std::string source = resourceManager_->loadStringFromFile(networkFilePath_);
 	if (source.empty())

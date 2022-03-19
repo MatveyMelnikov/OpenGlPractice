@@ -126,3 +126,8 @@ std::string ResourceManager::loadStringFromFile(const std::string& path) {
 
 	return source.str();
 }
+
+void ResourceManager::clearObjects() {
+	circles_.clear();
+	lines_.clear();
+}

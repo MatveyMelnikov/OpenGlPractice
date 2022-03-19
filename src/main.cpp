@@ -6,31 +6,21 @@
 #include "ResourceManager.h"
 #include "Network.h"
 
-const char *vertex_shader_src =
-"#version 460\n"
-"layout (location = 0) in vec3 vertex_position;"
-"uniform mat4 modelMatrix;"
-"uniform mat4 viewMatrix;"
-"out vec3 color;"
-"void main() {"
-"	gl_Position = viewMatrix * modelMatrix * vec4(vertex_position, 1.0);"
-"}";
-
-const char *fragment_shader_src =
-"#version 460\n"
-"uniform vec3 color;"
-"out vec4 fragColor;"
-"void main() {"
-"	fragColor = vec4(color, 1.0);"
-"}";
-
 const glm::ivec2 WINDOW_SIZE = glm::ivec2(640, 480);
+const std::string RESOURCES_PATH = "../res/";
 
-void glfwWindowSizeCallback(GLFWwindow* window, int width, int height)
-{
+void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	// Rendering during screen resizing
 	Engine* engine = Engine::getInstance(window);
 	engine->render();
+}
+
+void mouseCallback(GLFWwindow* window, int button, int action, int mods) {
+	if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_2) {
+		printf("Update network...\n");
+		Network::getInstance(window, RESOURCES_PATH + "network.json")->updateNetwork();
+		Engine::getInstance(window)->loadConfigFile("../res/config.json");
+	}
 }
 
 int main(void)
@@ -67,15 +57,16 @@ int main(void)
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 
-	glfwSetWindowSizeCallback(window, glfwWindowSizeCallback);
+	glfwSetWindowSizeCallback(window, windowSizeCallback);
+	glfwSetMouseButtonCallback(window, mouseCallback);
 
 	Engine* engine = Engine::getInstance(window);
 	ResourceManager* resourceManager = ResourceManager::getInstance();
-	resourceManager->createShaderProgram("../res");
-	Network network = Network(window, "../res/network.json");
+	resourceManager->createShaderProgram(RESOURCES_PATH);
+	Network* network = Network::getInstance(window, RESOURCES_PATH + "network.json");
 
 	// After creating elements
-	engine->loadConfigFile("../res/config.json");
+	engine->loadConfigFile(RESOURCES_PATH + "config.json");
 
 	while (!glfwWindowShouldClose(window))
 	{

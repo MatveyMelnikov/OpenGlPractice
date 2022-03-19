@@ -17,6 +17,7 @@ public:
 	void render(const glm::ivec2& windowSize);
 private:
 	void updatePrecision();
+	void calculateMatrixes();
 private:
 	std::vector<glm::fvec2> points_;
 	glm::ivec2 position_;
@@ -26,4 +27,5 @@ private:
 	GLuint vao_ = 0;
 	std::shared_ptr<ShaderProgram> shader_ = nullptr;
 	unsigned int precision_ = 20;
+	glm::mat4 modelMatrix_;
 };

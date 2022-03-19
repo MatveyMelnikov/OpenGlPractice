@@ -9,12 +9,14 @@
 
 class Network {
 public:
-	Network(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath);
+	static Network* getInstance(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath);
 	void updateNetwork();
 private:
+	Network(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath);
 	void createCircles();
 	void createLines();
 private:
+	static Network* instance_;
 	std::string networkFilePath_;
 	std::vector<std::pair<int, glm::fvec3>> layers_; // Number of circles on layer, and their color
 	Engine* engine_ = nullptr;

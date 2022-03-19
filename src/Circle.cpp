@@ -24,11 +24,14 @@ Circle::Circle(
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, nullptr);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	calculateMatrixes();
 }
 
 // Sets the position of the circle in pixels.
 void Circle::setPosition(glm::vec2 position) {
 	position_ = position;
+	calculateMatrixes();
 }
 
 void Circle::setColor(glm::fvec3 color) {
@@ -44,6 +47,7 @@ void Circle::setPrecision(unsigned int precision) {
 
 void Circle::setRadius(unsigned int radius) {
 	radius_ = radius;
+	calculateMatrixes();
 }
 
 glm::ivec2 Circle::getPosition() {
@@ -57,26 +61,10 @@ std::shared_ptr<ShaderProgram> Circle::getShader() {
 void Circle::render(const glm::ivec2& windowSize) {
 	if (shader_ == nullptr)
 		return;
-	glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
-	modelMatrix = glm::translate(
-		glm::mat4(1.f),
-		glm::vec3(
-			position_.x,
-			position_.y,
-			0.f
-		)
-	);
-	modelMatrix = glm::scale(
-		modelMatrix,
-		glm::vec3(
-			radius_ * 2.f,
-			radius_ * 2.f,
-			1.f
-		)
-	);
+
 	shader_->use();
 	shader_->setUniform("color", color_);
-	shader_->setUniform("modelMatrix", modelMatrix);
+	shader_->setUniform("modelMatrix", modelMatrix_);
 	glBindVertexArray(vao_);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, points_.size());
 }
@@ -100,4 +88,23 @@ void Circle::updatePrecision() {
 		GL_STATIC_DRAW
 	);
 	glUseProgram(0);
+}
+
+void Circle::calculateMatrixes() {
+	modelMatrix_ = glm::translate(
+		glm::mat4(1.f),
+		glm::vec3(
+			position_.x,
+			position_.y,
+			0.f
+		)
+	);
+	modelMatrix_ = glm::scale(
+		modelMatrix_,
+		glm::vec3(
+			radius_ * 2.f,
+			radius_ * 2.f,
+			1.f
+		)
+	);
 }
