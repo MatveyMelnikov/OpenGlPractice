@@ -7,6 +7,8 @@
 #include "Circle.h"
 #include "Line.h"
 
+const std::string RESOURCES_PATH = "../res/";
+
 class ResourceManager {
 public:
 	static ResourceManager* getInstance();

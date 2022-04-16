@@ -7,6 +7,8 @@
 #include "glm/glm.hpp"
 #include "ResourceManager.h"
 
+const glm::ivec2 WINDOW_SIZE = glm::ivec2(640, 480);
+
 class Engine {
 public:
 	static Engine* getInstance(GLFWAPI::GLFWwindow* window);

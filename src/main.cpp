@@ -6,8 +6,6 @@
 #include "ResourceManager.h"
 #include "Network.h"
 
-const glm::ivec2 WINDOW_SIZE = glm::ivec2(640, 480);
-
 void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	// Rendering during screen resizing
 	Engine* engine = Engine::getInstance(window);

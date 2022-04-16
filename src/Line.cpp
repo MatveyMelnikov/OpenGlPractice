@@ -61,13 +61,13 @@ float Line::getAngleRelativeAxis(int deltaX, int deltaY) {
 	const float PI = 3.1415;
 	// alpha = |y1 - y2| / |x1 - x2|
 	float angle = atan(abs((float)deltaY) / abs((float)deltaX));
-	if (deltaX < 0 && deltaY >= 0) // 4 quarter
+	if (deltaX <= 0 && deltaY >= 0) // 4 quarter
 		return 2.0f * PI - angle; // (0.5f * PI - angle) + PI * 1.5f
-	else if (deltaX > 0 && deltaY >= 0) // 3 quarter
+	else if (deltaX > 0 && deltaY > 0) // 3 quarter
 		return angle + PI;
-	else if (deltaX >= 0 && deltaY < 0) // 2 quarter
+	else if (deltaX >= 0 && deltaY <= 0) // 2 quarter
 		return 1.0f * PI - angle; // (0.5f * PI - angle) + PI * 0.5f
-	else
+	else // deltaX < 0 && deltaY < 0
 		return angle;
 }
 

@@ -95,8 +95,8 @@ Network::Network(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath
 void Network::updateNetwork() {
 	if (engine_ == nullptr)
 		return;
+	unsigned int layersSize = layers_.size();
 	layers_.clear();
-	resourceManager_->clearObjects();
 
 	std::string source = resourceManager_->loadStringFromFile(networkFilePath_);
 	if (source.empty())
@@ -139,9 +139,16 @@ void Network::updateNetwork() {
 			}
 		}
 	}
-	createCircles();
-	createLines();
 
-	// Set camera to center of network
-	engine_->setCameraPosition(glm::fvec2(50 * (layers_.size() - 1), 0.f));
+	if (layersSize != layers_.size()) {
+		resourceManager_->clearObjects();
+		createCircles();
+		createLines();
+		// Set camera to center of network
+		engine_->setCameraPosition(glm::fvec2(50 * (layers_.size() - 1), 0.f));
+		auto a = static_cast<float>((layers_.size() + 2) * 100) / static_cast<float>(WINDOW_SIZE.x);
+		engine_->setCameraScale(
+			static_cast<float>((layers_.size() + 2) * 100) / static_cast<float>(WINDOW_SIZE.x)
+		);
+	}
 }

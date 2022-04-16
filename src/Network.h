@@ -7,8 +7,6 @@
 #include "ResourceManager.h"
 #include "Engine.h"
 
-const std::string RESOURCES_PATH = "../res/";
-
 class Network {
 public:
 	static Network* getInstance(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath);
