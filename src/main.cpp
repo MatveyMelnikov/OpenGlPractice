@@ -7,7 +7,6 @@
 #include "Network.h"
 
 const glm::ivec2 WINDOW_SIZE = glm::ivec2(640, 480);
-const std::string RESOURCES_PATH = "../res/";
 
 void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	// Rendering during screen resizing
@@ -15,17 +14,16 @@ void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	engine->render();
 }
 
-void mouseCallback(GLFWwindow* window, int button, int action, int mods) {
-	if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_2) {
-		printf("Update network...\n");
-		Network::getInstance(window, RESOURCES_PATH + "network.json")->updateNetwork();
-		Engine::getInstance(window)->loadConfigFile("../res/config.json");
-	}
+void glfwError(int id, const char* description)
+{
+	std::cout << description << std::endl;
 }
 
 int main(void)
 {
 	GLFWwindow* window;
+	
+	glfwSetErrorCallback(&glfwError);
 
 	if (!glfwInit())
 	{
@@ -58,7 +56,6 @@ int main(void)
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 
 	glfwSetWindowSizeCallback(window, windowSizeCallback);
-	glfwSetMouseButtonCallback(window, mouseCallback);
 
 	Engine* engine = Engine::getInstance(window);
 	ResourceManager* resourceManager = ResourceManager::getInstance();
@@ -71,6 +68,7 @@ int main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		engine->render();
+		network->updateLines();
 	}
 
 	glfwTerminate();

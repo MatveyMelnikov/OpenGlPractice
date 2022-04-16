@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <vector>
+#include <memory>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
@@ -12,6 +13,7 @@ public:
 	void setColor(glm::fvec3 color);
 	void setPrecision(unsigned int precision);
 	void setRadius(unsigned int radius);
+	unsigned int getRadius();
 	glm::ivec2 getPosition();
 	std::shared_ptr<ShaderProgram> getShader();
 	void render(const glm::ivec2& windowSize);

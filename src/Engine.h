@@ -12,6 +12,7 @@ public:
 	static Engine* getInstance(GLFWAPI::GLFWwindow* window);
 	void moveCamera(glm::fvec2 cameraPosition);
 	void setCameraPosition(glm::fvec2 cameraPosition);
+	glm::fvec2 getCameraPosition();
 	void setCameraScale(float scale);
 	float getCameraScale();
 	void setCameraSpeed(float speed);
@@ -22,6 +23,8 @@ public:
 	bool getKeyStatus(int key);
 	void catchMovementKeys();
 	void loadConfigFile(const std::string& path);
+	glm::fvec2 getLocalCursorPosition();
+	void selectCircle(std::shared_ptr<Circle> circle);
 	void render();
 private:
 	Engine(GLFWAPI::GLFWwindow* window);
@@ -36,4 +39,5 @@ private:
 	bool keys_[512];
 	float cameraSpeed_ = 150.f;
 	float scaleSpeed_ = 1.f;
+	std::shared_ptr<Circle> selectedCircle_ = nullptr; // Circle selected by mouse
 };

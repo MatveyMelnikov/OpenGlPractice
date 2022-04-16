@@ -15,6 +15,7 @@ public:
 	std::shared_ptr<ShaderProgram> getShaderProgram(unsigned int position);
 	unsigned int getShaderProgramsAmount();
 	void createCircle(glm::ivec2 position, float radius, glm::fvec3 color, unsigned int shaderPosition);
+	void createCircle(glm::ivec2 position, glm::fvec3 color, unsigned int shaderPosition);
 	std::shared_ptr<Circle> getCircle(unsigned int position);
 	unsigned int getCirclesAmount();
 	void createLine(
@@ -24,10 +25,19 @@ public:
 		glm::fvec3 color,
 		unsigned int shaderPosition
 	);
+	void createLine(
+		glm::ivec2 startPoint,
+		glm::ivec2 endPoint,
+		glm::fvec3 color,
+		unsigned int shaderPosition
+	);
 	std::shared_ptr<Line> getLine(unsigned int position);
 	unsigned int getLinesAmount();
 	std::string loadStringFromFile(const std::string& path);
+	void setDefaultParameters(float circlesRadius, unsigned int linesWidth);
 	void clearObjects();
+	void clearLines();
+	void clearCirlces();
 private:
 	ResourceManager() {};
 	ResourceManager(const ResourceManager&) {};
@@ -37,4 +47,6 @@ private:
 	std::vector<std::shared_ptr<ShaderProgram>> shaderPrograms_;
 	std::vector<std::shared_ptr<Circle>> circles_;
 	std::vector<std::shared_ptr<Line>> lines_;
+	float circlesRadius_ = 10;
+	unsigned int linesWidth_ = 3;
 };

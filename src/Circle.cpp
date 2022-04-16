@@ -50,6 +50,10 @@ void Circle::setRadius(unsigned int radius) {
 	calculateMatrixes();
 }
 
+unsigned int Circle::getRadius() {
+	return radius_;
+}
+
 glm::ivec2 Circle::getPosition() {
 	return position_;
 }

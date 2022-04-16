@@ -31,6 +31,10 @@ void Engine::setCameraPosition(glm::fvec2 cameraPosition) {
 	);
 }
 
+glm::fvec2 Engine::getCameraPosition() {
+	return cameraPosition_;
+}
+
 void Engine::setCameraScale(float scale) {
 	scale_ = scale;
 }
@@ -70,6 +74,8 @@ bool Engine::getKeyStatus(int key) {
 void Engine::catchMovementKeys() {
 	float deltaTime = glfwGetTime() - lastFrameTime_;
 	float speed = cameraSpeed_ * deltaTime;
+
+	// Camera movement
 	if (keys_[GLFW_KEY_W])
 		moveCamera(glm::fvec2(0.f, speed));
 	if (keys_[GLFW_KEY_S])
@@ -85,6 +91,10 @@ void Engine::catchMovementKeys() {
 		if (scale_ < 3.0f)
 			scale_ += scaleSpeed_ * deltaTime;
 	}
+
+	// Selected circle movement
+	if (selectedCircle_ != nullptr)
+		selectedCircle_->setPosition(getLocalCursorPosition());
 }
 
 void Engine::loadConfigFile(const std::string& path) {
@@ -142,6 +152,31 @@ void Engine::loadConfigFile(const std::string& path) {
 		if (isRadius)
 			resourceManager->getCircle(i)->setRadius(radius);
 	}
+	resourceManager->setDefaultParameters(radius, width);
+}
+
+glm::fvec2 Engine::getLocalCursorPosition() {
+	glm::dvec2 cursorPosition;
+	glm::ivec2 windowsSize;
+	glfwGetWindowSize(window_, &windowsSize.x, &windowsSize.y);
+	glfwGetCursorPos(window_, &cursorPosition.x, &cursorPosition.y);
+
+	glm::ivec2 resultCursorPosition(
+		cursorPosition.x - windowsSize.x / 2.f,
+		(windowsSize.y / 2.f) - cursorPosition.y
+	); // screen center position
+
+	Engine* engine = Engine::getInstance(window_);
+	resultCursorPosition = glm::ivec2(
+		resultCursorPosition.x * engine->getCameraScale(),
+		resultCursorPosition.y * engine->getCameraScale()
+	);
+	resultCursorPosition += engine->getCameraPosition();
+	return resultCursorPosition;
+}
+
+void Engine::selectCircle(std::shared_ptr<Circle> circle) {
+	selectedCircle_ = circle;
 }
 
 void Engine::render() {

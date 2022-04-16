@@ -7,18 +7,23 @@
 #include "ResourceManager.h"
 #include "Engine.h"
 
+const std::string RESOURCES_PATH = "../res/";
+
 class Network {
 public:
 	static Network* getInstance(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath);
 	void updateNetwork();
+	void createLines();
+	void updateLines();
+	void createCircles();
+	void setLeftMouseButtonStatus(bool isPressed);
 private:
 	Network(GLFWAPI::GLFWwindow* window, const std::string& networkFilePath);
-	void createCircles();
-	void createLines();
 private:
 	static Network* instance_;
 	std::string networkFilePath_;
 	std::vector<std::pair<int, glm::fvec3>> layers_; // Number of circles on layer, and their color
 	Engine* engine_ = nullptr;
 	ResourceManager* resourceManager_ = nullptr;
+	bool isLeftMouseButtonPressed_ = false;
 };
